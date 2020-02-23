@@ -15,6 +15,10 @@ def shame_bot():
     def zachs_old(message):
         bot.reply_to(message, "haha Zach's old")
 
+    @bot.message_handler(commands=['willsucks'])
+    def zachs_old(message):
+        bot.reply_to(message, "haha Will Sucks")
+
     bot.polling()
 
 
