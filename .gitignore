@@ -3,5 +3,5 @@ lib/
 telegram-shame-bot/
 templates/
 /Pipfile
-/Pipfile.lock
+
 .idea
