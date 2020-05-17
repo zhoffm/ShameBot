@@ -7,8 +7,9 @@ app = Flask(__name__)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 
-@app.route('/')
+@app.route('/', methods=['POST'])
 def shame_bot():
+    print(request.get_json())
     logging.info(request.args)
     logging.info(request.data)
     logging.info(request.get_json())
