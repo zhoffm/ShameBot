@@ -12,14 +12,12 @@ def shame_bot():
     logging.info(request.args)
     logging.info(request.get_json())
     bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
-    print(bot.getMyCommands)
-    print(bot.commands)
-    logging.info(bot.getMyCommands)
+    logging.info(bot.getMyCommands())
     logging.info(bot.commands)
     if request.method == "POST":
         update = telegram.Update.de_json(request.get_json(force=True), bot)
-        chat_id = update.message.chat.id
-        if update.message.text:
+        if update.message:
+            chat_id = update.message.chat.id
             if '/echo' in update.message.text:
                 bot.sendMessage(chat_id=chat_id, text=update.message.text)
             elif '/help' in update.message.text:
