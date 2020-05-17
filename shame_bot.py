@@ -9,11 +9,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 @app.route('/', methods=['POST'])
 def shame_bot():
-    logging.info(request.args)
     logging.info(request.get_json())
     bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
     logging.info(bot.getMyCommands())
-    logging.info(bot.commands)
     if request.method == "POST":
         update = telegram.Update.de_json(request.get_json(force=True), bot)
         if update.message:
