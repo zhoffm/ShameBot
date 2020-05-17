@@ -24,6 +24,8 @@ def shame_bot():
             bot.sendMessage(chat_id=chat_id, text="haha Zach's old")
         elif '/willsucks' in update.message.text:
             bot.sendMessage(chat_id=chat_id, text="haha Will sucks!")
+        elif '/' in update.message.text:
+            bot.sendMessage(chat_id=chat_id, text=f"{update.message.text} isn't a command, dumbass")
         else:
             return "Finished!", 200
     return "Finished!", 200
