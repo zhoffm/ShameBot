@@ -8,11 +8,10 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 @app.route('/', methods=['POST'])
 def shame_bot():
-    print(request.get_json())
     logging.info(request.args)
-    logging.info(request.data)
     logging.info(request.get_json())
     bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
+    logging.info(bot.commands)
     if request.method == "POST":
         update = telegram.Update.de_json(request.get_json(force=True), bot)
         chat_id = update.message.chat.id
@@ -24,23 +23,16 @@ def shame_bot():
             bot.sendMessage(chat_id=chat_id, text="haha Zach's old")
         elif '/willsucks' in update.message.text:
             bot.sendMessage(chat_id=chat_id, text="haha Will sucks!")
+        elif '/rollme' in update.message.text:
+            bot.sendDice(chat_id=chat_id)
+        elif '/peoplescourt' in update.message.text:
+            bot.sendPoll(chat_id=chat_id, question="People's court?", is_anonymous=False, open_period=600,
+                         options=["People's Court!", "Not People's Court!"])
         elif '/' in update.message.text:
             bot.sendMessage(chat_id=chat_id, text=f"{update.message.text} isn't a command, dumbass")
         else:
             return "Finished!", 200
     return "Finished!", 200
-
-    # def fuck_off(update, context):
-    #     context.bot.send_message(chat_id=update.effective_chat.id, text="Fuck off")
-    #
-    # @bot.message_handler(commands=['old'])
-    # def zachs_old(message):
-    #     bot.reply_to(message, "haha Zach's old")
-    #
-    # @bot.message_handler(commands=['willsucks'])
-    # def will_sucks(message):
-    #     bot.reply_to(message, "haha Will Sucks")
-
 
 
 if __name__ == '__main__':
