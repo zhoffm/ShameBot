@@ -1,29 +1,36 @@
-from telebot import TeleBot
 import logging
-logging.basicConfig(level=logging.DEBUG)
+from os import environ
+import telegram
+from flask import Flask, request
+app = Flask(__name__)
 
-bot = TeleBot("1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY")
-
-
-@bot.message_handler(commands=['help'])
-def fuck_off(message):
-    bot.reply_to(message, "Fuck off")
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 
-@bot.message_handler(commands=['old'])
-def zachs_old(message):
-    bot.reply_to(message, "haha Zach's old")
+@app.route('/')
+def shame_bot():
+    logging.info(request.args)
+    logging.info(request.data)
+    logging.info(request.get_json())
+    bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
+    if request.method == "POST":
+        update = telegram.Update.de_json(request.get_json(force=True), bot)
+        chat_id = update.message.chat.id
+        bot.sendMessage(chat_id=chat_id, text=update.message.text)
+    return "Finished!", 200
 
+    # def fuck_off(update, context):
+    #     context.bot.send_message(chat_id=update.effective_chat.id, text="Fuck off")
+    #
+    # @bot.message_handler(commands=['old'])
+    # def zachs_old(message):
+    #     bot.reply_to(message, "haha Zach's old")
+    #
+    # @bot.message_handler(commands=['willsucks'])
+    # def will_sucks(message):
+    #     bot.reply_to(message, "haha Will Sucks")
 
-@bot.message_handler(commands=['willsucks'])
-def will_sucks(message):
-    bot.reply_to(message, "Will sucks!")
-
-# @bot.message_handler(commands=['PeoplesCourt'])
-# def peoples_court(message):
-#     total_group_memebers = bot.get_chat_members_count(-355911031) - 1
-#     bot.send_poll()
 
 
 if __name__ == '__main__':
-    bot.polling()
+    app.run(debug=True, host='0.0.0.0', port=int(environ.get('PORT', 8080)))
