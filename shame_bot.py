@@ -17,8 +17,10 @@ def shame_bot():
     if request.method == "POST":
         update = telegram.Update.de_json(request.get_json(force=True), bot)
         chat_id = update.message.chat.id
-        if update.message.text == '/echo':
+        if '/echo' in update.message.text:
             bot.sendMessage(chat_id=chat_id, text=update.message.text)
+        elif '/help' in update.message.text:
+            bot.sendMessage(chat_id=chat_id, text='Fuck off!')
         else:
             return "Finished!", 200
     return "Finished!", 200
