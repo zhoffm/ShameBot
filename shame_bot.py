@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-
 @app.route('/', methods=['POST'])
 def shame_bot():
     print(request.get_json())
@@ -21,6 +20,10 @@ def shame_bot():
             bot.sendMessage(chat_id=chat_id, text=update.message.text)
         elif '/help' in update.message.text:
             bot.sendMessage(chat_id=chat_id, text='Fuck off!')
+        elif '/old' in update.message.text:
+            bot.sendMessage(chat_id=chat_id, text="haha Zach's old")
+        elif '/willsucks' in update.message.text:
+            bot.sendMessage(chat_id=chat_id, text="haha Will sucks!")
         else:
             return "Finished!", 200
     return "Finished!", 200
