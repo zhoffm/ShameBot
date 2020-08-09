@@ -64,10 +64,10 @@ def shame_bot(request):
                 },
                 '/': {
                     'function': bot.sendMessage,
-                    'params': {
-                        'chat_id': chat_id,
-                        'text': f"{update.message.text} isn't a command, dumbass"
-                    }
+                    'params': [
+                        chat_id,
+                        f"{update.message.text} isn't a command, dumbass"
+                    ]
                 }
             }
             for cmd, action in options.values():
