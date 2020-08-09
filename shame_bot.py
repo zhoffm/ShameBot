@@ -1,7 +1,7 @@
 import logging
 from os import environ
 import telegram
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -10,7 +10,7 @@ bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
 
 
 @app.route('/', methods=['POST'])
-def shame_bot(request):
+def shame_bot():
     logging.info(request.get_json())
     logging.info(bot.getMyCommands())
     if request.method == "POST":
