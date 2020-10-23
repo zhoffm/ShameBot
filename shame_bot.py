@@ -53,12 +53,17 @@ def handle_commands(message, bot):
         bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
 
     def debug():
+        tag = None
+
         if from_user.username == 'zhoffm':
             logging.info(message)
             logging.info(f'Chat ID: {chat_id}')
             logging.info(f'From User: {from_user}')
             logging.info(f'Mentions: {mentions}')
-            logging.debug(mentions)
+            logging.debug(mention_entity_list)
+            if mention_entity_list:
+                tag = message.parse_entity(mention_entity_list[0])
+            logging.info(tag)
             bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
         else:
             bot.sendMessage(chat_id, text=f"How dare you?! You're not my dad!")
