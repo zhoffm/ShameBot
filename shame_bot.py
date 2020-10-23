@@ -47,7 +47,7 @@ def handle_commands(message, bot):
                      options=["People's Court!", "Not People's Court!"])
 
     def do_yipos():
-        bot.sendMessage(chat_id, text=f"{message.parse_entity(mention_entity_list[0])}, you inflammatory piece of shit")
+        bot.sendMessage(chat_id, text=f"you inflammatory piece of shit")
 
     def handle_empty_command():
         bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
@@ -58,6 +58,7 @@ def handle_commands(message, bot):
             logging.info(f'Chat ID: {chat_id}')
             logging.info(f'From User: {from_user}')
             logging.info(f'Mentions: {mentions}')
+            logging.debug(mentions)
             bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
         else:
             bot.sendMessage(chat_id, text=f"How dare you?! You're not my dad!")
