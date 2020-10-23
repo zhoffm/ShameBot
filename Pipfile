@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+autopep8 = "*"
 
 [packages]
 certifi = "==2020.4.5.1"
@@ -28,4 +29,4 @@ urllib3 = "==1.25.9"
 werkzeug = "==1.0.1"
 
 [requires]
-python_version = "2.7"
+python_version = "3.8"

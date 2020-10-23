@@ -1,6 +1,7 @@
 import logging
 from os import environ
 import telegram
+from telegram.botcommand import BotCommand
 from flask import Flask, request
 app = Flask(__name__)
 
@@ -8,76 +9,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
 
-# TODO: THIS IS CURRENTLY BROKEN! FIX THIS SHIT AT SOME POINT. YOU'RE EMBARRASSING YOURSELF WITH THIS HOT GARBAGE
-# @app.route('/', methods=['POST'])
-# def shame_bot():
-#     logging.info(request.get_json())
-#     logging.info(bot.getMyCommands())
-#     if request.method == "POST":
-#         update = telegram.Update.de_json(request.get_json(force=True), bot)
-#         if update.message:
-#             chat_id = update.message.chat.id
-#             options = {
-#                 '/echo': {
-#                     'function': bot.sendMessage,
-#                     'params': [
-#                         chat_id,
-#                         update.message.text
-#                     ]
-#                 },
-#                 '/help': {
-#                     'function': bot.sendMessage,
-#                     'params': [
-#                         chat_id,
-#                         'lol fuck off'
-#                     ]
-#                 },
-#                 '/old': {
-#                     'function': bot.sendMessage,
-#                     'params': [
-#                         chat_id,
-#                         "haha Zach's old"
-#                     ]
-#                 },
-#                 '/willsucks': {
-#                     'function': bot.sendMessage,
-#                     'params': [
-#                         chat_id,
-#                         'haha Will sucks!'
-#                     ]
-#                 },
-#                 '/rollme': {
-#                     'function': bot.sendDice,
-#                     'params': [
-#                         chat_id,
-#                     ]
-#                 },
-#                 '/peoplescourt': {
-#                     'function': bot.sendPoll,
-#                     'params': [
-#                         chat_id,
-#                         "People's court?",
-#                         False,
-#                         600,
-#                         ["People's Court!", "Not People's Court!"]
-#                     ]
-#                 },
-#                 '/': {
-#                     'function': bot.sendMessage,
-#                     'params': [
-#                         chat_id,
-#                         f"{update.message.text} isn't a command, dumbass"
-#                     ]
-#                 }
-#             }
-#             for cmd, action in options.values():
-#                 if cmd in update.message.text:
-#                     function = cmd.get('function')
-#                     parameters = cmd.get('params')
-#                     function(*parameters)
-#
-#     return "Finished!", 200
-
+shamebot_logs_url = 'https://console.cloud.google.com/run/detail/us-central1/telegram-shame-bot/logs?project=telegram-shame-bot-277421'
 
 @app.route('/', methods=['POST'])
 def shame_bot():
@@ -85,24 +17,64 @@ def shame_bot():
     logging.info(bot.getMyCommands())
     if request.method == "POST":
         update = telegram.Update.de_json(request.get_json(force=True), bot)
-        if update.message:
-            chat_id = update.message.chat.id
-            if '/echo' in update.message.text:
-                bot.sendMessage(chat_id=chat_id, text=update.message.text)
-            elif '/help' in update.message.text:
-                bot.sendMessage(chat_id=chat_id, text='lol fuck off')
-            elif '/old' in update.message.text:
-                bot.sendMessage(chat_id=chat_id, text="haha Zach's old")
-            elif '/willsucks' in update.message.text:
-                bot.sendMessage(chat_id=chat_id, text="haha Will sucks!")
-            elif '/rollme' in update.message.text:
-                bot.sendDice(chat_id=chat_id)
-            elif '/peoplescourt' in update.message.text:
-                bot.sendPoll(chat_id=chat_id, question="People's court?", is_anonymous=False, open_period=600,
-                             options=["People's Court!", "Not People's Court!"])
-            elif '/' in update.message.text:
-                bot.sendMessage(chat_id=chat_id, text=f"{update.message.text} isn't a command, dumbass")
+        logging.info(update)
+        message = update.message
+        if message:
+            print(message)
     return "Finished!", 200
+
+
+def handle_commands(message, bot):
+    chat_id = message.chat.id
+    from_user = message.from_user
+    entities = message.parse_entities()
+
+    def do_echo():
+        bot.sendMessage(chat_id, text=message.text)
+
+    def do_help():
+        bot.sendMessage(chat_id, text='lol fuck off'),
+
+    def do_willsucks():
+        bot.sendMessage(chat_id, text="haha Zach's old")
+
+    def do_rollme():
+        bot.sendDice(chat_id)
+
+    def do_peoplescourt():
+        bot.sendPoll(chat_id, question="People's court?", is_anonymous=False, open_period=600,
+                     options=["People's Court!", "Not People's Court!"])
+
+    def do_yipos():
+        bot.sendMessage(chat_id, text=f"yipos is currently under construction. Please stand by. Beeeeeeeeeeeeeeeeeeeeeeeeeeeeep!")
+
+    def handle_empty_command():
+        bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
+
+    def debug():
+        logging.info(message)
+        logging.info(dir(message))
+        logging.info(vars(message))
+        logging.info(f'Chat ID: {chat_id}')
+        logging.info(f'From User: {from_user}')
+        logging.info(f'Message Entities: {entities}')
+        bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
+
+    dispatch = {
+        'debug': debug,
+        'echo': do_echo,
+        'help': do_help,
+        'old': do_willsucks,
+        'willsucks': do_willsucks,
+        'rollme': do_rollme,
+        'peoplescourt': do_peoplescourt,
+        'yipos': do_yipos,
+        '': handle_empty_command
+    }
+
+    for command in dispatch:
+        if f'/{command}' in message.text:
+            dispatch[command]()
 
 
 if __name__ == '__main__':
