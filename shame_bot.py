@@ -37,10 +37,13 @@ def handle_commands(message, bot):
         bot.sendMessage(chat_id, text=message.text)
 
     def do_help():
-        bot.sendMessage(chat_id, text='lol fuck off'),
+        bot.sendMessage(chat_id, text='lol fuck off')
+
+    def do_old():
+        bot.sendMessage(chat_id, text="haha Zach's old")
 
     def do_willsucks():
-        bot.sendMessage(chat_id, text="haha Zach's old")
+        bot.sendMessage(chat_id, text="haha Will sucks")
 
     def do_rollme():
         bot.sendDice(chat_id)
@@ -75,7 +78,7 @@ def handle_commands(message, bot):
         'debug': debug,
         'echo': do_echo,
         'help': do_help,
-        'old': do_willsucks,
+        'old': do_old,
         'willsucks': do_willsucks,
         'rollme': do_rollme,
         'peoplescourt': do_peoplescourt,
