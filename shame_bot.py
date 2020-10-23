@@ -27,7 +27,7 @@ def shame_bot():
 def handle_commands(message, bot):
     chat_id = message.chat.id
     from_user = message.from_user
-    mentions = message.parse_entities(['mentions'])
+    mentions = message.parse_entities(['mention'])
     mention_entity_list = list(mentions)
 
     def do_echo():
