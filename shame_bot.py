@@ -74,6 +74,7 @@ def handle_commands(message, bot):
     for command in dispatch:
         if f'/{command}' in message.text:
             dispatch[command]()
+            return
 
 
 if __name__ == '__main__':
