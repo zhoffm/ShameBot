@@ -5,9 +5,10 @@ from telegram.botcommand import BotCommand
 from flask import Flask, request
 app = Flask(__name__)
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
 shamebot_logs_url = 'https://console.cloud.google.com/run/detail/us-central1/telegram-shame-bot/logs?project=telegram-shame-bot-277421'
+
 
 @app.route('/', methods=['POST'])
 def shame_bot():
@@ -26,7 +27,7 @@ def shame_bot():
 def handle_commands(message, bot):
     chat_id = message.chat.id
     from_user = message.from_user
-    entities = message.parse_entities()
+    mentions = message.parse_entities(['mentions'])
 
     def do_echo():
         bot.sendMessage(chat_id, text=message.text)
@@ -51,13 +52,14 @@ def handle_commands(message, bot):
         bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
 
     def debug():
-        logging.info(message)
-        logging.info(dir(message))
-        logging.info(vars(message))
-        logging.info(f'Chat ID: {chat_id}')
-        logging.info(f'From User: {from_user}')
-        logging.info(f'Message Entities: {entities}')
-        bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
+        if from_user.username == 'zhoffm':
+            logging.info(message)
+            logging.info(f'Chat ID: {chat_id}')
+            logging.info(f'From User: {from_user}')
+            logging.info(f'Mentions: {mentions}')
+            bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
+        else:
+            bot.sendMessage(chat_id, text=f"How dare you?! You're not my dad!")
 
     dispatch = {
         'debug': debug,
