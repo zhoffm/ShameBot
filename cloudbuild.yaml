@@ -26,5 +26,7 @@
    - '--to-latest'
    - '--platform'
    - 'managed'
+   - '--region'
+   - 'us-central1'
  images:
  - 'gcr.io/$PROJECT_ID/telegram-shame-bot:$COMMIT_SHA'
