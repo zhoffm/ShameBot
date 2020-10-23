@@ -28,6 +28,7 @@ def handle_commands(message, bot):
     chat_id = message.chat.id
     from_user = message.from_user
     mentions = message.parse_entities(['mentions'])
+    mention_entity_list = list(mentions)
 
     def do_echo():
         bot.sendMessage(chat_id, text=message.text)
@@ -46,7 +47,7 @@ def handle_commands(message, bot):
                      options=["People's Court!", "Not People's Court!"])
 
     def do_yipos():
-        bot.sendMessage(chat_id, text=f"yipos is currently under construction. Please stand by. Beeeeeeeeeeeeeeeeeeeeeeeeeeeeep!")
+        bot.sendMessage(chat_id, text=f"{message.parse_entity(mention_entity_list[0])}, you inflammatory piece of shit")
 
     def handle_empty_command():
         bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
