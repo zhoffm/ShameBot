@@ -69,7 +69,7 @@ def handle_commands(message, bot):
         'rollme': do_rollme,
         'peoplescourt': do_peoplescourt,
         'yipos': do_yipos,
-        '': handle_empty_command
+        # '': handle_empty_command
     }
 
     for command in dispatch:
