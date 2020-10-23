@@ -5,14 +5,13 @@ from telegram.botcommand import BotCommand
 from flask import Flask, request
 app = Flask(__name__)
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-
-bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
 shamebot_logs_url = 'https://console.cloud.google.com/run/detail/us-central1/telegram-shame-bot/logs?project=telegram-shame-bot-277421'
 
 @app.route('/', methods=['POST'])
 def shame_bot():
+    bot = telegram.Bot(token='1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY')
     logging.info(request.get_json())
     logging.info(bot.getMyCommands())
     if request.method == "POST":
@@ -20,7 +19,7 @@ def shame_bot():
         logging.info(update)
         message = update.message
         if message:
-            print(message)
+            handle_commands(message, bot)
     return "Finished!", 200
 
 
@@ -69,7 +68,7 @@ def handle_commands(message, bot):
         'rollme': do_rollme,
         'peoplescourt': do_peoplescourt,
         'yipos': do_yipos,
-        # '': handle_empty_command
+        '': handle_empty_command
     }
 
     for command in dispatch:

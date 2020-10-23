@@ -17,5 +17,12 @@
    - 'us-central1'
    - '--platform'
    - 'managed'
+ - name: 'gcr.io/cloud-builders/gcloud'
+   args:
+   - 'run'
+   - 'services'
+   - 'update-traffic'
+   - 'telegram-shame-bot'
+   - '--to-latest'
  images:
  - 'gcr.io/$PROJECT_ID/telegram-shame-bot:$COMMIT_SHA'
