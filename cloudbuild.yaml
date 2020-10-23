@@ -24,5 +24,7 @@
    - 'update-traffic'
    - 'telegram-shame-bot'
    - '--to-latest'
+   - '--platform'
+   - 'managed'
  images:
  - 'gcr.io/$PROJECT_ID/telegram-shame-bot:$COMMIT_SHA'
