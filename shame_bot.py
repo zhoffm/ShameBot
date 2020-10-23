@@ -29,6 +29,9 @@ def handle_commands(message, bot):
     from_user = message.from_user
     mentions = message.parse_entities(['mention'])
     mention_entity_list = list(mentions)
+    tag = None
+    if mention_entity_list:
+        tag = message.parse_entity(mention_entity_list[0])
 
     def do_echo():
         bot.sendMessage(chat_id, text=message.text)
@@ -47,13 +50,15 @@ def handle_commands(message, bot):
                      options=["People's Court!", "Not People's Court!"])
 
     def do_yipos():
-        bot.sendMessage(chat_id, text=f"you inflammatory piece of shit")
+        if tag:
+            bot.sendMessage(chat_id, text=f"{tag}, you inflammatory piece of shit")
+        else:
+            bot.sendMessage(chat_id, text=f"you inflammatory piece of shit")
 
     def handle_empty_command():
         bot.sendMessage(chat_id, text=f"{message.text} isn't a command, dumbass!")
 
     def debug():
-        tag = None
 
         if from_user.username == 'zhoffm':
             logging.info(message)
@@ -61,8 +66,6 @@ def handle_commands(message, bot):
             logging.info(f'From User: {from_user}')
             logging.info(f'Mentions: {mentions}')
             logging.debug(mention_entity_list)
-            if mention_entity_list:
-                tag = message.parse_entity(mention_entity_list[0])
             logging.info(tag)
             bot.sendMessage(chat_id, text=f"Papa! I've put my logs here: {shamebot_logs_url}")
         else:
