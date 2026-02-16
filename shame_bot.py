@@ -7,7 +7,7 @@ from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandle
 from flask import Flask, request
 app = Flask(__name__)
 
-TOKEN = '1063153614:AAER4WaltVeBUrXZAZta07R4OLCh-ZwHaKY'
+TOKEN = ''
 bot = Bot(token=TOKEN)
 updater = Updater(bot=bot, use_context=True)
 dispatcher = updater.dispatcher
